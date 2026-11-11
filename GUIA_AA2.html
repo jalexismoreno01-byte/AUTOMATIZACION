@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía paso a paso — Taller U2 (AA2): scripts automatizados del módulo completo</title>
+<style>
+  :root { color-scheme: light; }
+  body {
+    margin: 0; padding: 0 0 60px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 15.5px; line-height: 1.65; color: #1b1b1b;
+    background: #f6f7f9;
+  }
+  .portada {
+    background: linear-gradient(135deg, #123a5f, #1f6fb2);
+    color: #fff; padding: 46px 12% 38px;
+  }
+  .portada h1 { margin: 0 0 8px; font-size: 30px; }
+  .portada p { margin: 4px 0; opacity: .92; }
+  main {
+    max-width: 1000px; margin: -22px auto 0; background: #fff;
+    padding: 34px 46px; border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(0,0,0,.10);
+  }
+  h1 { font-size: 24px; color: #123a5f; border-bottom: 3px solid #1f6fb2;
+       padding-bottom: 6px; margin-top: 34px; }
+  h2 { font-size: 20px; color: #14486f; margin-top: 30px; }
+  h3 { font-size: 16.5px; color: #1b1b1b; margin-top: 22px; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 13.8px; }
+  th, td { border: 1px solid #c9d3dd; padding: 7px 9px; text-align: left;
+            vertical-align: top; }
+  th { background: #e8f1f8; color: #123a5f; }
+  tr:nth-child(even) td { background: #fafcfe; }
+  code {
+    background: #eef2f6; padding: 1.5px 5px; border-radius: 4px;
+    font-family: Consolas, "Courier New", monospace; font-size: 13.3px;
+    color: #b02050;
+  }
+  pre {
+    background: #0f1720; color: #d7e0ea; padding: 14px 16px;
+    border-radius: 8px; overflow-x: auto; line-height: 1.5;
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: 13.2px; }
+  blockquote {
+    margin: 14px 0; padding: 10px 16px; background: #fff8e6;
+    border-left: 4px solid #e8a900; border-radius: 0 6px 6px 0;
+  }
+  blockquote p { margin: 6px 0; }
+  img { max-width: 100%; border: 1px solid #d4dce4; border-radius: 6px;
+        margin: 8px 0; }
+  figcaption, em { color: #55616e; }
+  li { margin: 4px 0; }
+  hr { border: none; border-top: 1px solid #dde4ea; margin: 26px 0; }
+  .check { color: #1a7f37; font-weight: bold; }
+</style>
+</head>
+<body>
+<header class="portada"><h1>Guía paso a paso — Taller U2 (AA2): scripts automatizados del módulo completo</h1><p>Taller U2 &middot; Actividad AA2 &middot; Trabajo grupal</p><p>Inscripciones CETO &middot; Python &middot; pytest &middot; requests &middot; Selenium</p></header>
+<main>
+<h1 id="guia-paso-a-paso-taller-u2-aa2-scripts-automatizados-del-modulo-completo">Guía paso a paso — Taller U2 (AA2): scripts automatizados del módulo completo</h1>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Actividad</strong></td>
+<td>AA2 — Taller grupal: scripts automatizados funcionales</td>
+</tr>
+<tr>
+<td><strong>Integrante</strong></td>
+<td>Jhon Alexis Moreno</td>
+</tr>
+<tr>
+<td><strong>Roles asumidos</strong></td>
+<td>Líder/integrador · Responsable de API · Responsable de interfaz · Responsable de evidencias y documentación</td>
+</tr>
+<tr>
+<td><strong>Módulo</strong></td>
+<td>Mini aplicación <strong>"Inscripciones CETO"</strong> (Opción A)</td>
+</tr>
+<tr>
+<td><strong>Foco asignado</strong></td>
+<td><strong>1. Ciclo de vida del registro:</strong> crear (web y API) → consultar → listar → eliminar → verificar que ya no existe</td>
+</tr>
+<tr>
+<td><strong>Suite</strong></td>
+<td>37 pruebas automatizadas: 20 API · 11 interfaz · <strong>6 flujos E2E</strong></td>
+</tr>
+<tr>
+<td><strong>Herramientas</strong></td>
+<td>Python 3.15.2 · pytest 9.2.0 · requests 2.34.2 · Selenium 4.52.0 · pytest-html 4.2.0 · Flask 3.1.3 · Git 2.56.1 · Chrome (headless)</td>
+</tr>
+<tr>
+<td><strong>Fecha</strong></td>
+<td>10 de noviembre de 2026</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="1-portada-equipo-roles-y-foco">1. Portada: equipo, roles y foco</h2>
+<p>El trabajo se organizó con los <strong>cuatro roles</strong> del Paso 1 del documento. Por
+condiciones del curso el equipo funcionó como <strong>integrante único</strong>, asumiendo
+todas las responsabilidades (el documento permite que en equipos pequeños el
+líder asuma además la documentación); los <strong>responsables de la matriz de casos</strong>
+reflejan el rol bajo el cual se escribió cada prueba, no a personas distintas.</p>
+<table>
+<thead>
+<tr>
+<th>Rol</th>
+<th>Responsabilidad principal</th>
+<th>Quién lo asumió</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Líder / integrador</strong></td>
+<td>Repositorio, plan de pruebas, integración del código, pipeline</td>
+<td>Jhon Moreno</td>
+</tr>
+<tr>
+<td><strong>Responsable de API</strong></td>
+<td>Pruebas de la API REST (requests)</td>
+<td>Jhon Moreno</td>
+</tr>
+<tr>
+<td><strong>Responsable de interfaz</strong></td>
+<td>Page Objects y pruebas Selenium</td>
+<td>Jhon Moreno</td>
+</tr>
+<tr>
+<td><strong>Responsable de evidencias y documentación</strong></td>
+<td>Capturas, reporte, guía paso a paso, reflexión</td>
+<td>Jhon Moreno</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Foco 1 — Ciclo de vida del registro.</strong> Todo el módulo se probó desde esa
+óptica: un estudiante se <strong>crea</strong> por el formulario o por la API, se <strong>consulta</strong>
+por id, aparece en los <strong>listados</strong> (web y API), se <strong>elimina</strong> y, después de
+borrarse, <strong>ya no existe</strong> en ninguna capa y su correo vuelve a estar libre.</p>
+<hr>
+<h2 id="2-modulo-bajo-prueba-y-herramientas">2. Módulo bajo prueba y herramientas</h2>
+<h3 id="21-la-aplicacion">2.1 La aplicación</h3>
+<p>Sistema Flask con datos en memoria (se pierden al reiniciar, ideal para pruebas):</p>
+<table>
+<thead>
+<tr>
+<th>Capa</th>
+<th>Ruta</th>
+<th>Qué hace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API REST</td>
+<td><code>GET/POST /api/estudiantes</code></td>
+<td>Lista (con <code>?programa=</code>) y crea estudiantes en JSON</td>
+</tr>
+<tr>
+<td>API REST</td>
+<td><code>GET/DELETE /api/estudiantes/&lt;id&gt;</code></td>
+<td>Consulta y elimina por id</td>
+</tr>
+<tr>
+<td>Formulario</td>
+<td><code>/inscripcion</code> (GET/POST)</td>
+<td>Inscripción web; muestra mensaje <code>EST-XXXX</code> o errores por campo</td>
+</tr>
+<tr>
+<td>Listado</td>
+<td><code>/estudiantes</code></td>
+<td>Tabla con código, nombre, correo, programa, semestre y contador <code>#total</code></td>
+</tr>
+</tbody>
+</table>
+<p>Reglas de negocio (contrato): nombre ≥ 3 caracteres · correo válido y único ·
+programa en la lista permitida · semestre entre 1 y 10. El POST del formulario
+tiene <strong>0,5 s de latencia simulada</strong>, lo que obliga a esperas explícitas.</p>
+<p>Códigos: <code>201</code> creación · <code>400</code> cuerpo no JSON · <code>409</code> correo duplicado ·
+<code>422</code> datos inválidos · <code>204</code> borrado · <code>404</code> no encontrado.</p>
+<h3 id="22-estructura-del-repositorio-y-reparto">2.2 Estructura del repositorio y reparto</h3>
+<pre><code>tests/conftest.py                     ← fixtures compartidas (NO se modifica sin avisar)
+tests/test_api_estudiantes.py         ← responsable de API (20 pruebas, marca `api`)
+tests/test_formulario_inscripcion.py  ← responsable de interfaz (11 pruebas, marca `ui`)
+tests/test_flujo_e2e.py               ← entre todos (6 flujos, marcas `ui` + `e2e`)
+pages/inscripcion_page.py             ← Page Object del formulario (marca `ui`)
+pages/listado_page.py                 ← Page Object del listado (marca `ui`)
+data/casos_formulario.csv             ← datos de prueba parametrizados
+app/                                  ← aplicación bajo prueba (no se modifica en pruebas)
+.github/workflows/pruebas.yml         ← pipeline de CI (líder)
+capturas/ · evidencias/ · reportes/   ← evidencias
+GUIA_AA2.md · GUIA_AA2.html           ← esta guía
+</code></pre>
+<p>Marcos registrados en <code>pytest.ini</code> (<code>api</code>, <code>ui</code>, <code>e2e</code>), tal como exige el Paso 5.</p>
+<hr>
+<h2 id="3-plan-de-pruebas-del-modulo-paso-3">3. Plan de pruebas del módulo (Paso 3)</h2>
+<p>Se definió <strong>antes de programar</strong>, ampliando las matrices individuales de AA1.</p>
+<h3 id="31-historias-funcionalidades">3.1 Historias / funcionalidades</h3>
+<ul>
+<li><strong>H1.</strong> Como coordinador quiero <strong>inscribir estudiantes por el formulario</strong> para registrarlos y recibir un código.</li>
+<li><strong>H2.</strong> Como sistema quiero <strong>crear estudiantes vía API</strong> para integrarnos con otros módulos.</li>
+<li><strong>H3.</strong> Como coordinador quiero <strong>consultar y listar</strong> los inscritos (por id, completos y filtrados) para verificar quiénes están registrados.</li>
+<li><strong>H4.</strong> Como administrador quiero <strong>eliminar inscripciones</strong> para corregir errores, con la certeza de que el dato desaparezca en todas las capas.</li>
+<li><strong>H5.</strong> Como sistema quiero <strong>integridad de datos</strong>: sin duplicados y con los mismos valores en web y API durante todo el ciclo de vida.</li>
+</ul>
+<h3 id="32-matriz-de-casos-37-automatizados-con-responsable-y-estado">3.2 Matriz de casos (37 automatizados, con responsable y estado)</h3>
+<p><strong>Pruebas de API — 20 casos</strong> · Responsable: <em>API</em></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Funcionalidad</th>
+<th>Tipo</th>
+<th>Datos</th>
+<th>Resultado esperado</th>
+<th>Responsable</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API-01</td>
+<td>Crear estudiante válido</td>
+<td>API</td>
+<td>nombre "Carlos Andres Ruiz", correo único, semestre 5</td>
+<td>201 + JSON con id ≥ 1 y los datos enviados</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-02</td>
+<td>Semestre en texto</td>
+<td>API</td>
+<td>semestre "7"</td>
+<td>201 y <code>semestre == 7</code></td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-03</td>
+<td>Persiste en el listado</td>
+<td>API</td>
+<td>POST y luego GET de la lista</td>
+<td>200 + la lista contiene el correo</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-04</td>
+<td>Cuerpo no JSON</td>
+<td>API</td>
+<td>texto plano</td>
+<td>400 + "El cuerpo debe ser JSON"</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-05</td>
+<td>Nombre corto (límite)</td>
+<td>API</td>
+<td>"Ab"</td>
+<td>422 + error en nombre</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-06</td>
+<td>Correo inválido</td>
+<td>API</td>
+<td>"correo-malo"</td>
+<td>422 + error en correo</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-07</td>
+<td>Programa inexistente</td>
+<td>API</td>
+<td>"Cocina"</td>
+<td>422 + error en programa</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-08</td>
+<td>Semestre bajo el límite</td>
+<td>API</td>
+<td>0</td>
+<td>422 + error en semestre</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-09</td>
+<td>Semestre sobre el límite</td>
+<td>API</td>
+<td>11</td>
+<td>422 + error en semestre</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-10</td>
+<td>Semestre no numérico</td>
+<td>API</td>
+<td>"abc"</td>
+<td>422 + error en semestre</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-11</td>
+<td>Varios errores a la vez</td>
+<td>API</td>
+<td>los 4 campos inválidos</td>
+<td>422 + los 4 campos en <code>errores</code></td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-12</td>
+<td>Correo duplicado</td>
+<td>API</td>
+<td>correo ya registrado</td>
+<td>409 + "El correo ya esta registrado"</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-13</td>
+<td>Listar estudiantes</td>
+<td>API</td>
+<td>—</td>
+<td>200 + lista (array)</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-14</td>
+<td>Filtrar por programa</td>
+<td>API</td>
+<td><code>?programa=Ingenieria Industrial</code></td>
+<td>200 + solo ese programa</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-15</td>
+<td>Consultar por id</td>
+<td>API</td>
+<td>id de un estudiante creado</td>
+<td>200 + los mismos datos</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-16</td>
+<td>Id inexistente</td>
+<td>API</td>
+<td>999999</td>
+<td>404 + "Estudiante no encontrado"</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-17</td>
+<td>Eliminar existente</td>
+<td>API</td>
+<td>id creado</td>
+<td>204 sin cuerpo; luego GET → 404</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>API-18</td>
+<td>Eliminar inexistente</td>
+<td>API</td>
+<td>888888</td>
+<td>404</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td><strong>API-19</strong></td>
+<td><strong>Ciclo de vida completo</strong> (foco 1)</td>
+<td>API</td>
+<td>crear → consultar → listar → eliminar → verificar ausencia</td>
+<td>cada paso deja el sistema en su estado esperado</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td><strong>API-20</strong></td>
+<td><strong>Borrado libera el correo</strong> (foco 1)</td>
+<td>API</td>
+<td>crear, borrar y volver a crear el mismo correo</td>
+<td>201 en la segunda creación</td>
+<td>API</td>
+<td>Aprobada</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pruebas de interfaz — 11 casos</strong> · Responsable: <em>Interfaz</em></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Funcionalidad</th>
+<th>Tipo</th>
+<th>Datos</th>
+<th>Resultado esperado</th>
+<th>Responsable</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WEB-01</td>
+<td>Inscripción exitosa</td>
+<td>web</td>
+<td>datos válidos (correo único)</td>
+<td>mensaje "Inscripcion exitosa. Codigo: EST-XXXX"</td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>WEB-02</td>
+<td>Aparece en el listado</td>
+<td>web</td>
+<td>inscribir y navegar a /estudiantes</td>
+<td>correo y nombre en la tabla</td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>WEB-03</td>
+<td>Envío vacío</td>
+<td>web</td>
+<td>sin tocar nada</td>
+<td>errores en los 4 campos</td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>WEB-04</td>
+<td>Nombre corto</td>
+<td>web</td>
+<td>"Al" (CSV)</td>
+<td>mensaje exacto SOLO bajo nombre</td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>WEB-05</td>
+<td>Correo inválido</td>
+<td>web</td>
+<td>"luis-ceto.edu.co" (CSV)</td>
+<td>mensaje exacto SOLO bajo correo</td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>WEB-06</td>
+<td>Sin programa</td>
+<td>web</td>
+<td>opción por defecto (CSV)</td>
+<td>mensaje exacto SOLO bajo programa</td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>WEB-07</td>
+<td>Semestre 0 (límite)</td>
+<td>web</td>
+<td>0 (CSV)</td>
+<td>mensaje exacto SOLO bajo semestre</td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>WEB-08</td>
+<td>Semestre 11 (límite)</td>
+<td>web</td>
+<td>11 (CSV)</td>
+<td>mensaje exacto SOLO bajo semestre</td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>WEB-09</td>
+<td>Conserva datos tras el error</td>
+<td>web</td>
+<td>semestre 99</td>
+<td>error en semestre Y el nombre sigue escrito</td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>WEB-10</td>
+<td>Correo duplicado por web</td>
+<td>web</td>
+<td>dos veces el mismo correo</td>
+<td>"El correo ya esta registrado"</td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>WEB-11</td>
+<td>Listado consistente</td>
+<td>web</td>
+<td>abrir /estudiantes</td>
+<td>filas = contador <code>#total</code> y códigos <code>EST-XXXX</code></td>
+<td>Interfaz</td>
+<td>Aprobada</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Flujos de punta a punta — 6 casos (mínimo requerido: 3)</strong> · Responsable: <em>Equipo (API + Interfaz)</em></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Funcionalidad</th>
+<th>Tipo</th>
+<th>Datos</th>
+<th>Resultado esperado</th>
+<th>Responsable</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E2E-01</td>
+<td>Inscripción web → API</td>
+<td>flujo E2E</td>
+<td>formulario con correo único</td>
+<td>el registro aparece en la API con nombre, programa y semestre idénticos</td>
+<td>Equipo</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>E2E-02</td>
+<td>Creación API → listado web</td>
+<td>flujo E2E</td>
+<td>POST por API</td>
+<td>el listado web muestra la fila con el código <code>EST-id</code> asignado por la API</td>
+<td>Equipo</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>E2E-03</td>
+<td>Ciclo de vida completo desde la web (caso bandera)</td>
+<td>flujo E2E</td>
+<td>formulario → API → listado → DELETE</td>
+<td>el código <code>EST-XXXX</code> corresponde al id de la API; tras borrar: 404 en API y fila ausente en el listado</td>
+<td>Equipo</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>E2E-04</td>
+<td>Ciclo de vida completo desde la API</td>
+<td>flujo E2E</td>
+<td>POST → GET → listado → DELETE</td>
+<td>consulta consistente con la creación; ausencia verificada en API <strong>y</strong> en la web</td>
+<td>Equipo</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>E2E-05</td>
+<td>Duplicado web con verificación en API</td>
+<td>flujo E2E</td>
+<td>dos inscripciones con el mismo correo</td>
+<td>el segundo intento muestra el error y la API conserva <strong>un solo</strong> registro</td>
+<td>Equipo</td>
+<td>Aprobada</td>
+</tr>
+<tr>
+<td>E2E-06</td>
+<td>Reincorporación tras el borrado</td>
+<td>flujo E2E</td>
+<td>web → DELETE por API → web con el mismo correo</td>
+<td>la reinscripción triunfa y queda exactamente un registro</td>
+<td>Equipo</td>
+<td>Aprobada</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-flujos-de-punta-a-punta-lo-que-diferencia-aa2-de-aa1">3.3 Flujos de punta a punta (lo que diferencia AA2 de AA1)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Flujo</th>
+<th>Capa de inicio</th>
+<th>Capa de verificación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Inscribo por el <strong>formulario</strong> → lo encuentro en la <strong>API</strong></td>
+<td>Web</td>
+<td>API</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Creo por la <strong>API</strong> → aparece en el <strong>listado web</strong></td>
+<td>API</td>
+<td>Web</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Inscribo dos veces el mismo correo por la <strong>web</strong> → el segundo intento muestra el error y la API conserva un solo registro</td>
+<td>Web</td>
+<td>API</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Ciclo de vida completo web</strong>: código <code>EST-XXXX</code> ↔ id API ↔ listado ↔ borrado ↔ ausencia en ambas capas</td>
+<td>Web + API</td>
+<td>Ambas</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Ciclo de vida completo API</strong> con verificación en el listado web</td>
+<td>API</td>
+<td>Web</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Borrado por API → el correo se vuelve a inscribir por web</td>
+<td>API</td>
+<td>Web</td>
+</tr>
+</tbody>
+</table>
+<h3 id="34-criterio-de-terminado">3.4 Criterio de terminado</h3>
+<ul>
+<li>[x] Todas las pruebas pasan (<code>python -m pytest -v</code> en verde).</li>
+<li>[x] Evidencias generadas: capturas de navegador, salidas de terminal y reporte HTML.</li>
+<li>[x] <strong>Sin <code>time.sleep</code></strong>: solo esperas explícitas (<code>WebDriverWait</code>) — verificado con búsqueda en el código.</li>
+<li>[x] La suite completa pasa <strong>3 veces seguidas</strong> (Paso 6).</li>
+</ul>
+<hr>
+<h2 id="4-paso-a-paso-del-trabajo-reproducible-por-otro-equipo">4. Paso a paso del trabajo (reproducible por otro equipo)</h2>
+<h3 id="41-preparar-el-entorno">4.1 Preparar el entorno</h3>
+<pre><code class="language-bash">python -m venv .venv
+.venv\Scripts\activate              # Windows (Linux/Mac: source .venv/bin/activate)
+python -m pip install -r requirements.txt
+python --version                    # 3.15.2
+</code></pre>
+<p><img alt="Captura 1. Entorno instalado: versiones de Python y Git y paquetes de la suite." src="capturas/01_entorno_instalado.png"></p>
+<p><em>Captura 1. Entorno instalado: versiones de Python y Git y paquetes de la suite.</em></p>
+<h3 id="42-explorar-la-aplicacion-a-mano">4.2 Explorar la aplicación a mano</h3>
+<pre><code class="language-bash">python -m app.servidor              # http://127.0.0.1:5000/inscripcion
+</code></pre>
+<p>Se recorrieron el formulario, el listado y la API en el navegador (F12) para
+levantar los identificadores (<code>#nombre</code>, <code>#btn-inscribir</code>, <code>#mensaje-exito</code>,
+<code>#error-&lt;campo&gt;</code>, <code>#tabla-estudiantes</code>, <code>#total</code>) antes de escribir pruebas.</p>
+<h3 id="43-montar-el-repositorio-compartido-paso-4">4.3 Montar el repositorio compartido (Paso 4)</h3>
+<pre><code class="language-bash">git init
+git add .
+git commit -m &quot;Proyecto base del taller grupal&quot;
+git branch -M main
+</code></pre>
+<p>Se creó un <code>.gitignore</code> que excluye <code>.venv/</code>, <code>__pycache__/</code> y el material de
+la actividad individual: <strong>el repositorio se entrega sin el entorno virtual</strong>.</p>
+<h3 id="44-trabajar-por-ramas-una-por-responsabilidad">4.4 Trabajar por ramas (una por responsabilidad)</h3>
+<pre><code class="language-bash">git checkout -b api-jhon             # rama del responsable de API
+# ... tests/test_api_estudiantes.py: API-19 y API-20 (ciclo de vida) ...
+git add tests/test_api_estudiantes.py
+git commit -m &quot;Pruebas API: ciclo de vida completo y liberacion de correo tras borrado&quot;
+git checkout main
+git merge --no-ff api-jhon           # el líder integra
+
+git checkout -b interfaz-jhon        # rama del responsable de interfaz
+# ... pages/listado_page.py + WEB-11 ...
+git commit -am &quot;Page Object del listado y prueba de consistencia filas/contador&quot;
+git checkout main &amp;&amp; git merge --no-ff interfaz-jhon
+
+git checkout -b e2e-jhon             # flujos entre todos
+# ... tests/test_flujo_e2e.py (E2E-01..E2E-06) ...
+git commit -am &quot;Flujos E2E: ciclo de vida web&lt;-&gt;API, duplicados y reincorporacion&quot;
+git checkout main &amp;&amp; git merge --no-ff e2e-jhon
+</code></pre>
+<p><img alt="Captura 2. Historial de commits con las tres ramas integradas en main (git log --oneline --graph)." src="capturas/09_historial_git.png"></p>
+<p><em>Captura 2. Historial de commits con las tres ramas integradas en main (<code>git log --oneline --graph</code>).</em></p>
+<p>Regla aplicada durante el trabajo: <strong>cada quien edita solo sus archivos</strong> y
+<code>tests/conftest.py</code> no se modifica sin avisar al equipo.</p>
+<h3 id="45-pipeline-de-integracion-continua-opcional-paso-63">4.5 Pipeline de integración continua (opcional, Paso 6.3)</h3>
+<p><code>.github/workflows/pruebas.yml</code> ejecuta <code>-m api</code> y luego <code>-m ui</code> (interfaz +
+flujos) en cada <code>push</code>/<code>pull_request</code> y sube <code>reportes/</code> y <code>evidencias/</code> como
+artefacto. Queda listo para activarse al publicar el repositorio en GitHub
+(con captura de la pestaña Actions en verde una vez haya un remoto).</p>
+<h3 id="46-ejecutar-la-suite-completa-tres-veces-seguidas-paso-62">4.6 Ejecutar la suite completa tres veces seguidas (Paso 6.2)</h3>
+<pre><code class="language-bash">python -m pytest -v                                                     # corrida 1
+python -m pytest -v                                                     # corrida 2
+python -m pytest -v --html=reportes/reporte.html --self-contained-html   # corrida 3 + reporte
+</code></pre>
+<p>Salidas completas en <code>capturas/04_ejecucion_1_de_3.txt</code>,
+<code>capturas/05_ejecucion_2_de_3.txt</code> y <code>capturas/06_ejecucion_3_de_3_con_reporte.txt</code>.</p>
+<p><img alt="Captura 3. Corrida 1 de 3: suite completa en verde." src="capturas/04_ejecucion_1_de_3.png"></p>
+<p><em>Captura 3. Corrida 1 de 3: suite completa en verde.</em></p>
+<p><img alt="Captura 4. Corrida 2 de 3: suite completa en verde." src="capturas/05_ejecucion_2_de_3.png"></p>
+<p><em>Captura 4. Corrida 2 de 3: suite completa en verde.</em></p>
+<p><img alt="Captura 5. Corrida 3 de 3 con reporte HTML generado." src="capturas/06_ejecucion_3_de_3_con_reporte.png"></p>
+<p><em>Captura 5. Corrida 3 de 3 con reporte HTML generado.</em></p>
+<h3 id="47-demostracion-del-defecto-prueba-de-la-prueba">4.7 Demostración del defecto (prueba de la prueba)</h3>
+<p>Se introdujo a propósito un defecto en <code>app/servidor.py</code>: el <code>DELETE</code> devolvía
+<code>204</code> <strong>sin eliminar</strong> el registro.</p>
+<pre><code class="language-bash"># (editar app/servidor.py: el DELETE deja de hacer estudiantes.pop(...))
+python -m pytest -v -k &quot;delete or ciclo or libera or borrado&quot;   # ← falla
+git checkout -- app/servidor.py                                  # revertir
+python -m pytest -v -k &quot;delete or ciclo or libera or borrado&quot;   # ← vuelve a verde
+</code></pre>
+<p><img alt="Captura 6. Defecto introducido: 6 pruebas fallan (API y flujos E2E)." src="capturas/07_defecto_introducido.png"></p>
+<p><em>Captura 6. Defecto introducido: 6 pruebas fallan (API y flujos E2E).</em></p>
+<p><img alt="Captura 7. Defecto revertido: las mismas pruebas vuelven a pasar." src="capturas/08_defecto_revertido.png"></p>
+<p><em>Captura 7. Defecto revertido: las mismas pruebas vuelven a pasar.</em></p>
+<h3 id="48-recolectar-evidencias-paso-7">4.8 Recolectar evidencias (Paso 7)</h3>
+<table>
+<thead>
+<tr>
+<th>Evidencia</th>
+<th>Dónde está</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Código</td>
+<td>Este repositorio (sin <code>.venv</code>; exportable con <code>git archive</code>)</td>
+</tr>
+<tr>
+<td>Ejecución en verde (3 veces)</td>
+<td><code>capturas/04…06_ejecucion_*.txt</code> + <code>.png</code></td>
+</tr>
+<tr>
+<td>Reporte HTML</td>
+<td><code>reportes/reporte.html</code> (autocontenido)</td>
+</tr>
+<tr>
+<td>Capturas del navegador</td>
+<td><code>evidencias/</code> (fixture <code>evidencia(...)</code>, incluye los 6 flujos E2E)</td>
+</tr>
+<tr>
+<td>Defecto detectado</td>
+<td><code>capturas/07_defecto_introducido.txt</code> y <code>capturas/08_defecto_revertido.txt</code></td>
+</tr>
+<tr>
+<td>Trabajo colaborativo</td>
+<td><code>capturas/09_historial_git.txt</code> (historial con ramas y merges)</td>
+</tr>
+<tr>
+<td>Demostración en vivo</td>
+<td><code>capturas/demo_01…demo_05.jpg</code> (flujo E2E-03 ejecutado a mano, sección 4.10)</td>
+</tr>
+<tr>
+<td>Pipeline</td>
+<td><code>.github/workflows/pruebas.yml</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="49-generar-este-documento-en-html">4.9 Generar este documento en HTML</h3>
+<pre><code class="language-bash">python tools/md_a_html.py GUIA_AA2.md GUIA_AA2.html
+</code></pre>
+<h3 id="410-demostracion-en-vivo-del-flujo-e2e-03-capturas-del-navegador">4.10 Demostración en vivo del flujo E2E-03 (capturas del navegador)</h3>
+<p>El mismo flujo que automatiza <code>test_ciclo_completo_web_consulta_borrado_y_ausencia</code>
+se ejecutó <strong>a mano en el navegador</strong> contra el servidor corriendo en
+<code>http://127.0.0.1:5000</code>, dejando captura de cada etapa:</p>
+<p><strong>① Inscribir por el formulario → mensaje de éxito con el código</strong></p>
+<p><img alt="Demo 1. Formulario con exito: &quot;Inscripcion exitosa. Codigo: EST-0002&quot;." src="capturas/demo_01_formulario_exito.jpg"></p>
+<p><em>Demo 1. Formulario enviado: "Inscripcion exitosa. Codigo: EST-0002".</em></p>
+<p><strong>② Verificar en la API que el dato quedó guardado</strong></p>
+<p><img alt="Demo 2. GET /api/estudiantes devuelve el registro con id 2 y los mismos datos." src="capturas/demo_02_api_con_registro.jpg"></p>
+<p><em>Demo 2. <code>GET /api/estudiantes</code> devuelve el registro <code>id: 2</code> con nombre, correo, programa y semestre idénticos a los del formulario.</em></p>
+<p><strong>③ Confirmar la fila en el listado web (antes de borrar)</strong></p>
+<p><img alt="Demo 3. Listado con la fila EST-0002 y Total: 1." src="capturas/demo_03_listado_antes_de_borrar.jpg"></p>
+<p><em>Demo 3. Listado <code>/estudiantes</code>: fila <code>EST-0002</code> y <code>Total: 1</code>.</em></p>
+<p><strong>④ Eliminar por la API y comprobar el 404</strong></p>
+<p><img alt="Demo 4. DELETE 204 y GET /api/estudiantes/2 responde &quot;Estudiante no encontrado&quot;." src="capturas/demo_04_api_404_tras_borrar.jpg"></p>
+<p><em>Demo 4. <code>DELETE</code> → <code>204</code> y después <code>GET /api/estudiantes/2</code> → <code>{"error":"Estudiante no encontrado"}</code>.</em></p>
+<p><strong>⑤ Verificar en la web que el registro ya no existe</strong></p>
+<p><img alt="Demo 5. Listado sin filas y Total: 0 tras el borrado." src="capturas/demo_05_listado_tras_borrar.jpg"></p>
+<p><em>Demo 5. Listado recargado: tabla sin filas y <code>Total: 0</code> — la ausencia confirmada en la capa web.</em></p>
+<table>
+<thead>
+<tr>
+<th>Etapa del flujo</th>
+<th>Captura</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Crear (web)</td>
+<td><code>capturas/demo_01_formulario_exito.jpg</code></td>
+</tr>
+<tr>
+<td>Consultar (API)</td>
+<td><code>capturas/demo_02_api_con_registro.jpg</code></td>
+</tr>
+<tr>
+<td>Listar (web)</td>
+<td><code>capturas/demo_03_listado_antes_de_borrar.jpg</code></td>
+</tr>
+<tr>
+<td>Eliminar (API)</td>
+<td><code>capturas/demo_04_api_404_tras_borrar.jpg</code></td>
+</tr>
+<tr>
+<td>Verificar ausencia (ambas capas)</td>
+<td><code>capturas/demo_05_listado_tras_borrar.jpg</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5-los-scripts-explicados">5. Los scripts explicados</h2>
+<h3 id="51-fixtures-compartidas-testsconftestpy-intocable">5.1 Fixtures compartidas (<code>tests/conftest.py</code>, intocable)</h3>
+<p><code>base_url</code> levanta la app en un hilo y <strong>un puerto libre</strong> una vez por sesión;
+<code>api_url</code> deriva de ella; <code>driver</code> abre Chrome headless y siempre cierra con
+<code>quit()</code>; <code>evidencia('nombre')</code> guarda PNG en <code>evidencias/</code> y el hook
+<code>pytest_runtest_makereport</code> captura automáticamente la pantalla <strong>si una prueba
+falla</strong>. Ninguna prueba necesita tener el servidor abierto a mano.</p>
+<h3 id="52-page-objects-uno-por-pagina-compartido-por-todos">5.2 Page Objects: uno por página, compartido por todos</h3>
+<p><code>pages/inscripcion_page.py</code> (formulario) centraliza localizadores y acciones;
+<code>pages/listado_page.py</code> (listado) hace lo propio con la tabla. Las pruebas solo
+dicen <strong>qué</strong> verificar; los Page Objects informan <strong>cómo</strong> se maneja el HTML,
+y <strong>nunca</strong> contienen <code>assert</code>.</p>
+<p>Lo más importante para el Foco 1 es la espera del borrado: el navegador debe
+recargar <code>/estudiantes</code> y solo entonces comprobar que la fila desapareció —
+nunca una lectura al azar ni un <code>sleep</code>:</p>
+<pre><code class="language-python">def esperar_que_no_haya_fila_con(self, texto, tiempo=8):
+    &quot;&quot;&quot;Espera a que desaparezca toda fila que mencione el texto.&quot;&quot;&quot;
+    WebDriverWait(self.driver, tiempo).until(
+        lambda d: not any(texto in f.text for f in d.find_elements(*self.FILAS))
+    )
+    return self
+</code></pre>
+<h3 id="53-pruebas-de-la-api-arrange-act-assert-con-limpieza">5.3 Pruebas de la API: Arrange → Act → Assert con limpieza</h3>
+<p>El caso bandera de la capa API recorre el ciclo de vida completo en una sola
+prueba y verifica el <strong>efecto</strong> de cada paso (incluida la ausencia tras el
+borrado):</p>
+<pre><code class="language-python">def test_ciclo_completo_crear_consultar_listar_eliminar(api_url):
+    &quot;&quot;&quot;Foco 1: crear -&gt; consultar -&gt; listar -&gt; eliminar -&gt; verificar ausencia.&quot;&quot;&quot;
+    creada = crear(api_url, nombre=&quot;Ciclo De Vida Prueba&quot;)
+    assert creada.status_code == 201
+    id_est = creada.json()[&quot;id&quot;]
+
+    detalle = requests.get(f&quot;{api_url}/{id_est}&quot;, timeout=10)
+    assert detalle.status_code == 200
+    assert detalle.json() == creada.json(), &quot;la consulta debe ser consistente con la creacion&quot;
+
+    assert any(e[&quot;id&quot;] == id_est for e in requests.get(api_url, timeout=10).json())
+
+    assert requests.delete(f&quot;{api_url}/{id_est}&quot;, timeout=10).status_code == 204
+
+    assert requests.get(f&quot;{api_url}/{id_est}&quot;, timeout=10).status_code == 404
+    assert not any(e[&quot;id&quot;] == id_est for e in requests.get(api_url, timeout=10).json())
+</code></pre>
+<p>Cada prueba crea sus datos con <code>uuid</code> y limpia con <code>borrar_si_existe()</code>: la
+suite puede correr en cualquier orden sin ensuciarse.</p>
+<h3 id="54-flujos-de-punta-a-punta-teststest_flujo_e2epy">5.4 Flujos de punta a punta (<code>tests/test_flujo_e2e.py</code>)</h3>
+<p>El ejemplo resumen del equipo — la inscripción hecha <strong>en el navegador</strong> debe
+existir <strong>en la API</strong> con los mismos valores:</p>
+<pre><code class="language-python">def test_inscripcion_web_queda_registrada_en_api(driver, base_url, api_url, evidencia):
+    &quot;&quot;&quot;E2E-01: inscribo por el FORMULARIO -&gt; lo encuentro en la API.&quot;&quot;&quot;
+    correo = correo_unico()
+
+    _, mensaje = inscribir_por_web(
+        driver, base_url,
+        nombre=&quot;Sofia Mejia Rojas&quot;, correo=correo,
+        programa=&quot;Ingenieria Industrial&quot;, semestre=7,
+        evidencia=evidencia, paso=&quot;01_formulario_enviado&quot;,
+    )
+    assert &quot;Inscripcion exitosa&quot; in mensaje, &quot;el formulario debe reportar exito&quot;
+
+    registro = buscar_por_correo(api_url, correo)
+    assert registro is not None, &quot;La inscripcion web no aparece en la API&quot;
+    assert registro[&quot;nombre&quot;] == &quot;Sofia Mejia Rojas&quot;
+    assert registro[&quot;programa&quot;] == &quot;Ingenieria Industrial&quot;
+    assert registro[&quot;semestre&quot;] == 7, &quot;el semestre debe persistir igual en la API&quot;
+    borrar_si_existe(api_url, registro[&quot;id&quot;])
+</code></pre>
+<p>Y el caso bandera E2E-03, que encadena <strong>las cuatro etapas del foco 1</strong> cruzando
+capas (el código <code>EST-XXXX</code> del formulario se convierte en el id que consulta y
+borra la API, y la web confirma la ausencia):</p>
+<pre><code class="language-python">    # 1) Crear por el formulario y capturar el codigo EST-XXXX del exito
+    _, mensaje = inscribir_por_web(driver, base_url, nombre=&quot;Camilo Andres Vera&quot;,
+                                   correo=correo, programa=&quot;Ingenieria de Sistemas&quot;,
+                                   semestre=9, evidencia=evidencia, paso=&quot;03_exito_web&quot;)
+    id_est = int(re.search(r&quot;EST-(\d+)&quot;, mensaje).group(1))
+
+    # 2) Consultar por la API con el id derivado del codigo
+    detalle = requests.get(f&quot;{api_url}/{id_est}&quot;, timeout=10)
+    assert detalle.status_code == 200
+    assert detalle.json()[&quot;correo&quot;] == correo
+
+    # 3) Listar en la web: el registro aparece en la tabla
+    listado = PaginaListado(driver, base_url).abrir().esperar_fila_con(correo)
+    assert f&quot;EST-{id_est:04d}&quot; in listado.codigos()
+
+    # 4) Eliminar por la API
+    assert requests.delete(f&quot;{api_url}/{id_est}&quot;, timeout=10).status_code == 204
+
+    # 5) Verificar la ausencia en AMBAS capas
+    assert requests.get(f&quot;{api_url}/{id_est}&quot;, timeout=10).status_code == 404
+    assert buscar_por_correo(api_url, correo) is None
+
+    listado_final = PaginaListado(driver, base_url).abrir()
+    listado_final.esperar_que_no_haya_fila_con(correo)
+    assert not listado_final.contiene(correo)
+</code></pre>
+<p><strong>Por qué importa:</strong> una prueba de formulario aislada solo comprueba que
+<em>aparece un mensaje</em>; un flujo de punta a punta comprueba que <strong>el dato
+realmente quedó guardado, es consultable, se lista y, al borrarlo, desaparece
+en todas las capas</strong>. Esa es la diferencia entre "la pantalla dice éxito" y
+"el sistema funciona".</p>
+<h3 id="55-datos-de-prueba-externos-datacasos_formulariocsv">5.5 Datos de prueba externos (<code>data/casos_formulario.csv</code>)</h3>
+<p>Los casos de error de la interfaz no están en el código: son filas del CSV.
+<strong>Agregar un caso es agregar una fila</strong>, sin tocar ningún script, y aparece en
+el reporte como <code>test_formulario_muestra_error_por_campo[semestre_11]</code>.</p>
+<hr>
+<h2 id="6-resultados">6. Resultados</h2>
+<h3 id="61-suite-completa-3-ejecuciones-consecutivas">6.1 Suite completa — 3 ejecuciones consecutivas</h3>
+<table>
+<thead>
+<tr>
+<th>Corrida</th>
+<th>Comando</th>
+<th>Aprobadas</th>
+<th>Fallidas</th>
+<th>Duración</th>
+<th>Evidencia</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>python -m pytest -v</code></td>
+<td>37</td>
+<td>0</td>
+<td>92.76 s</td>
+<td><code>capturas/04_ejecucion_1_de_3.txt</code> + <code>.png</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>python -m pytest -v</code></td>
+<td>37</td>
+<td>0</td>
+<td>91.37 s</td>
+<td><code>capturas/05_ejecucion_2_de_3.txt</code> + <code>.png</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>python -m pytest -v --html=…</code></td>
+<td>37</td>
+<td>0</td>
+<td>114.07 s</td>
+<td><code>capturas/06_ejecucion_3_de_3_con_reporte.txt</code> + <code>.png</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="62-resumen-por-capa">6.2 Resumen por capa</h3>
+<table>
+<thead>
+<tr>
+<th>Capa</th>
+<th>Marca</th>
+<th>Pruebas</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API REST</td>
+<td><code>api</code></td>
+<td>20</td>
+<td>20 aprobadas</td>
+</tr>
+<tr>
+<td>Interfaz (formulario + listado)</td>
+<td><code>ui</code> (sin E2E)</td>
+<td>11</td>
+<td>11 aprobadas</td>
+</tr>
+<tr>
+<td>Flujos punta a punta</td>
+<td><code>e2e</code> (+<code>ui</code>)</td>
+<td>6</td>
+<td>6 aprobadas</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>37</strong></td>
+<td><strong>37 aprobadas · 0 fallidas (3/3 corridas)</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Reporte HTML: <strong><code>reportes/reporte.html</code></strong> (autocontenido, se abre en cualquier
+navegador).</p>
+<p><img alt="Captura 8. Reporte HTML de pytest con las 37 pruebas en verde." src="capturas/11_reporte_html.png"></p>
+<p><em>Captura 8. Reporte HTML de pytest con las 37 pruebas en verde.</em></p>
+<p>Capturas del navegador en <code>evidencias/</code>, por ejemplo:
+<code>test_ciclo_completo_web_consulta_borrado_y_ausencia__04_listado_antes_de_borrar.png</code>
+y <code>…__05_listado_tras_borrar.png</code> (el antes y el después del borrado),
+<code>test_correo_duplicado_web_conserva_un_solo_registro_en_api__08_error_duplicado_web.png</code>
+y <code>test_tras_el_borrado_el_correo_se_puede_inscribir_otra_vez__09_reinscripcion_tras_borrado.png</code>.</p>
+<h3 id="63-prueba-de-la-prueba-defecto-introducido">6.3 Prueba de la prueba (defecto introducido)</h3>
+<table>
+<thead>
+<tr>
+<th>Escenario</th>
+<th>Resultado</th>
+<th>Evidencia</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Defecto: <code>DELETE</code> responde 204 sin eliminar</td>
+<td><strong>6 fallidas, 1 aprobada</strong> (API-17, API-19, API-20, E2E-03, E2E-04, E2E-06)</td>
+<td><code>capturas/07_defecto_introducido.txt</code> + <code>.png</code></td>
+</tr>
+<tr>
+<td>Defecto presente, ejecutando <strong>solo</strong> las pruebas de formulario</td>
+<td><strong>11 aprobadas, 0 fallidas</strong> — la capa de interfaz <strong>no</strong> lo detecta</td>
+<td><code>capturas/10_defecto_solo_lo_detectan_api_y_e2e.txt</code> + <code>.png</code></td>
+</tr>
+<tr>
+<td>Defecto revertido (<code>git checkout -- app/servidor.py</code>)</td>
+<td><strong>7 aprobadas, 0 fallidas</strong> (mismo filtro que la primera fila)</td>
+<td><code>capturas/08_defecto_revertido.txt</code> + <code>.png</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-hallazgos">7. Hallazgos</h2>
+<h3 id="71-defecto-real-detectado-por-la-suite-evidencia-obligatoria">7.1 Defecto real detectado por la suite (evidencia obligatoria)</h3>
+<p><strong>Defecto:</strong> <code>DELETE /api/estudiantes/&lt;id&gt;</code> devolvía <code>204 Not Found</code> pero <strong>no
+eliminaba</strong> el registro (se comparaba el id sin sacarlo del diccionario).</p>
+<p><strong>Cómo se detectó:</strong> con el defecto presente, <strong>6 pruebas cayeron</strong>: las de la
+API verificaban el 404 posterior y la liberación del correo; los flujos E2E
+detectaron además el <strong>efecto visible</strong>: el estudiante seguía apareciendo en el
+listado web después de "borrarlo". Se revirtió el cambio y la suite volvió a
+verde. Salidas completas en <code>capturas/07_defecto_introducido.txt</code> y
+<code>capturas/08_defecto_revertido.txt</code>.</p>
+<p><strong>Lección de equipo:</strong> el defecto lo detectaron las capas API y E2E, <strong>jamás
+las pruebas de formulario</strong>: ejecutando solo <code>tests/test_formulario_inscripcion.py</code>
+con el defecto puesto, las <strong>11 pruebas pasaron igual</strong>
+(<code>capturas/10_defecto_solo_lo_detectan_api_y_e2e.txt</code>) porque el formulario
+nunca borra. Cada capa aporta una red distinta y solo cruzándolas se ve el
+efecto completo (ver reflexión, pregunta 1).</p>
+<h3 id="72-sincronizacion-con-el-navegador-dos-errores-propios-corregidos">7.2 Sincronización con el navegador: dos errores propios corregidos</h3>
+<ol>
+<li><strong>Leer la API antes de tiempo (condición de carrera).</strong> En un primer borrador
+   de E2E-06 se consultaba la API justo después del clic en <em>Inscribir</em>; como el
+   POST tarda ~0,5 s, la lectura podía llegar <strong>antes</strong> de que el servidor
+   guardara y la prueba fallaba de forma intermitente. Corrección: siempre
+   <strong>esperar el mensaje de éxito en el navegador</strong> (<code>esperar_mensaje_exito()</code>)
+   antes de verificar por API — la señal de que el POST terminó.</li>
+<li><strong>Mensaje perdido por recargar la página.</strong> Al crear una segunda instancia de
+   <code>PaginaInscripcion</code> (que navega en el constructor) justo después del primer
+   envío, se perdía el <code>#mensaje-exito</code>. Corrección: reutilizar la misma
+   instancia para esperar el resultado y solo después abrir una página nueva.</li>
+</ol>
+<p>Con esas dos reglas, la suite completa pasó <strong>3 de 3 corridas consecutivas sin
+ninguna prueba intermitente</strong>. <em>Como referencia de curso, el taller documenta
+también el caso clásico <code>Node with given id does not belong to the document</code>:
+se resuelve indicando a la espera que tolere ese error transitorio con
+<code>WebDriverWait(..., ignored_exceptions=(WebDriverException,))</code> — patrón a
+aplicar si algún día aparece un error de nodo obsoleto en nuestras esperas.</em></p>
+<h3 id="73-datos-aislados-entre-pruebas">7.3 Datos aislados entre pruebas</h3>
+<p>Cada prueba usa correos únicos con <code>uuid</code> y limpia lo que crea. Sin eso, las
+pruebas de duplicados (API-12, WEB-10, E2E-05) se contaminarían entre sí y
+dependerían del orden de ejecución.</p>
+<hr>
+<h2 id="8-reflexion-grupal">8. Reflexión grupal</h2>
+<p><em>Reflexión del integrante que asumió los cuatro roles del equipo.</em></p>
+<p><strong>1. ¿Qué aportó cada capa de pruebas (API, formulario, punta a punta)? ¿Hubo
+algún error que solo detectó una de ellas?</strong></p>
+<p>La <strong>API</strong> da velocidad y precisión: 20 casos en ~2 s que verifican códigos de
+estado, contratos y límites. El <strong>formulario</strong> valida lo que el usuario realmente
+ve: mensajes por campo, preservación de datos y navegación al listado. Los
+flujos <strong>punta a punta</strong> son los únicos que responden <em>"¿el dato quedó
+guardado?"</em> en lugar de <em>"¿la pantalla dijo éxito?"</em>. El defecto demostrado lo
+detectaron solo API y E2E —nunca las pruebas puras de formulario—, y los E2E
+fueron los que añadieron la consecuencia <strong>visible</strong> (la fila seguía en el
+listado tras el borrado). También lo detectaron que solo una capa: WEB-11
+(filas vs. <code>#total</code>) solo mira la interfaz, y API-04 (cuerpo no JSON) solo
+existe en la capa de servicio.</p>
+<p><strong>2. ¿Qué dificultades tuvieron al integrar el trabajo de varias personas en un
+mismo proyecto? ¿Cómo las resolvieron?</strong></p>
+<p>Aunque trabajé como equipo reducido, la disciplina de integración fue la misma
+que pide el documento: <strong>una rama por responsabilidad</strong> (<code>api-jhon</code>,
+<code>interfaz-jhon</code>, <code>e2e-jhon</code>), archivos con dueño claro y <code>conftest.py</code>
+intocable. La dificultad real fue la <strong>dependencia cruzada</strong>: los flujos E2E
+necesitaban el Page Object del listado, que aún no existía en su rama. Se resolvió
+integrando en orden (<code>api</code> → <code>interfaz</code> → <code>e2e</code>) con <code>--no-ff</code> para que el
+historial muestre qué aportó cada rama y el <code>main</code> siempre quedara ejecutable.</p>
+<p><strong>3. ¿Encontraron pruebas intermitentes? ¿Qué aprendieron sobre la sincronización
+con el navegador?</strong></p>
+<p>Sí, en el desarrollo: la lectura de la API tras el clic (carrera de 0,5 s) y la
+pérdida del mensaje al recargar la página hicieron fallar pruebas <em>unas veces y
+otras no</em>. Ambas se corrigieron con esperas explícitas sobre <strong>señales
+semánticas</strong> (mensaje de éxito, fila presente/ausente) en lugar de tiempos
+fijos: nunca <code>time.sleep</code>. Aprendizaje clave: <strong>la espera correcta es esperar
+por el estado que la prueba necesita comprobar, no por una cantidad de tiempo</strong>.
+Resultado: 3 corridas consecutivas sin un solo flake.</p>
+<p><strong>4. Si este módulo pasara a producción, ¿qué pruebas ejecutarían en cada cambio
+y cuáles solo antes de publicar?</strong></p>
+<p>En cada cambio (minutos): las 20 de API y los 6 flujos E2E — son las que
+verifican el contrato y la integridad entre capas; corren ~50 s y son las que
+más regresiones cuestan en producción. Antes de publicar (pase completo): las 11
+de interfaz con capturas y el reporte HTML, más la exploración manual de
+usabilidad. El pipeline <code>.github/workflows/pruebas.yml</code> ya ejecuta exactamente
+esa secuencia en cada <code>push</code>.</p>
+<p><strong>5. ¿Qué harían diferente si empezaran de nuevo?</strong></p>
+<p>Escribir los <strong>flujos E2E primero que las pruebas unitarias de capa</strong>: al
+definir temprano "crear web → verificar API → borrar → verificar ausencia" se
+habrían descubierto antes los huecos (por ejemplo, que hace falta un Page Object
+para el listado) y se habría diseñado el <code>conftest</code> con ese flujo en mente.
+También: generar las capturas y el historial de git <strong>durante</strong> el trabajo, no al
+final, y dejar el defecto de demostración anotado en el plan desde el día 1.</p>
+<hr>
+<h2 id="9-aportes-individuales">9. Aportes individuales</h2>
+<table>
+<thead>
+<tr>
+<th>Integrante</th>
+<th>Rol</th>
+<th>Aportes concretos (archivos y pruebas)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Jhon Alexis Moreno</strong></td>
+<td>Líder / integrador</td>
+<td><code>git init</code>, <code>.gitignore</code>, estructura del repo, ramas e integraciones con <code>--no-ff</code>, <code>pytest.ini</code> con las marcas <code>api</code>/<code>ui</code>/<code>e2e</code>, <code>.github/workflows/pruebas.yml</code> (pipeline), ejecución y estabilización de la suite 3 veces</td>
+</tr>
+<tr>
+<td>Jhon Alexis Moreno</td>
+<td>Responsable de API</td>
+<td><code>tests/test_api_estudiantes.py</code>: 18 pruebas heredadas de AA1 + <strong>API-19</strong> (ciclo de vida completo) y <strong>API-20</strong> (borrado libera el correo) → 20 pruebas</td>
+</tr>
+<tr>
+<td>Jhon Alexis Moreno</td>
+<td>Responsable de interfaz</td>
+<td><code>pages/inscripcion_page.py</code> (Page Object del formulario), <code>pages/listado_page.py</code> (Page Object del listado, nuevo), <strong>WEB-11</strong> (filas vs. contador) → 11 pruebas de interfaz</td>
+</tr>
+<tr>
+<td>Jhon Alexis Moreno</td>
+<td>Evidencias y documentación</td>
+<td><code>tests/test_flujo_e2e.py</code> (<strong>E2E-01…E2E-06</strong>), demostración del defecto (<code>capturas/07…08</code>), reporte <code>reportes/reporte.html</code>, capturas de navegador en <code>evidencias/</code>, historial <code>capturas/09_historial_git.*</code>, esta guía (<code>GUIA_AA2.md</code> + <code>GUIA_AA2.html</code>) y la reflexión</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>El reparto respeta la regla del taller: <strong>todos escriben pruebas</strong> (cada rol
+aportó pruebas) y la matriz de la sección 3 registra el responsable de cada
+caso.</p>
+</blockquote>
+<hr>
+<h2 id="lista-de-verificacion-aa2">Lista de verificación AA2</h2>
+<ul>
+<li>[x] El plan de pruebas tiene matriz de casos con responsables (37 casos, sección 3.2).</li>
+<li>[x] Hay al menos 3 flujos de punta a punta que cruzan la API y la interfaz (6, sección 3.3).</li>
+<li>[x] Hay un solo Page Object por página, reutilizado por todo el equipo (<code>inscripcion_page.py</code>, <code>listado_page.py</code>).</li>
+<li>[x] La suite completa pasa <strong>3 veces seguidas</strong> (sección 6.1).</li>
+<li>[x] Hay evidencias de código, capturas, reporte, defecto detectado y trabajo colaborativo (sección 4.8).</li>
+<li>[x] La guía paso a paso es reproducible por otro equipo (sección 4).</li>
+<li>[x] Están la reflexión grupal y la tabla de aportes individuales (secciones 8 y 9).</li>
+</ul>
+</main>
+</body>
+</html>
