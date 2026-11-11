@@ -1,0 +1,15 @@
+﻿* 5b95ed8 Evidencias AA2: suite 3 veces verde, reporte HTML, defecto demostrado y guia paso a paso
+* c09dc59 Pipeline CI: pruebas de API e interfaz en cada push (GitHub Actions)
+*   81a7184 Integracion de rama e2e-jhon (flujos de punta a punta)
+|\  
+| * e825833 Flujos E2E: ciclo de vida web<->API, duplicados y reincorporacion
+|/  
+*   071a491 Integracion de rama interfaz-jhon (Page Object y pruebas de interfaz)
+|\  
+| * a99334e Page Object del listado y prueba de consistencia filas/contador
+|/  
+*   a92bd9a Integracion de rama api-jhon (pruebas de API)
+|\  
+| * da7cfa6 Pruebas API: ciclo de vida completo y liberacion de correo tras borrado
+|/  
+* ed8d22c Proyecto base del taller grupal

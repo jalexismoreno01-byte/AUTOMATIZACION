@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>git log --oneline --graph - PowerShell</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0c0c0c; font-family: Consolas, "Courier New", monospace; }
+  .barra { height: 40px; background: #202020; color: #e8e8e8; display: flex;
+            align-items: center; gap: 10px; padding: 0 14px; font-size: 13.5px;
+            font-family: "Segoe UI", Arial, sans-serif; border-bottom: 1px solid #3a3a3a; }
+  .punto { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .pre { margin: 0; padding: 14px 16px 10px; color: #cccccc; font-size: 14px;
+          line-height: 19px; white-space: pre-wrap; word-break: break-word; }
+  .ok { color: #16c60c; font-weight: bold; }
+  .mal { color: #e81123; font-weight: bold; }
+  .res { color: #ffffff; font-weight: bold; }
+  .prompt { color: #ffffff; }
+</style></head><body>
+<div class="barra"><span class="punto" style="background:#ff5f57"></span>
+<span class="punto" style="background:#febc2e"></span><span class="punto" style="background:#28c840"></span>
+<span>git log --oneline --graph - PowerShell</span></div>
+<pre class="pre">﻿* 5b95ed8 Evidencias AA2: suite 3 veces verde, reporte HTML, defecto demostrado y guia paso a paso
+* c09dc59 Pipeline CI: pruebas de API e interfaz en cada push (GitHub Actions)
+*   81a7184 Integracion de rama e2e-jhon (flujos de punta a punta)
+|\  
+| * e825833 Flujos E2E: ciclo de vida web&lt;-&gt;API, duplicados y reincorporacion
+|/  
+*   071a491 Integracion de rama interfaz-jhon (Page Object y pruebas de interfaz)
+|\  
+| * a99334e Page Object del listado y prueba de consistencia filas/contador
+|/  
+*   a92bd9a Integracion de rama api-jhon (pruebas de API)
+|\  
+| * da7cfa6 Pruebas API: ciclo de vida completo y liberacion de correo tras borrado
+|/  
+* ed8d22c Proyecto base del taller grupal</pre>
+</body></html>
